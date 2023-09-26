@@ -7,65 +7,90 @@ app.use(express.static(__dirname + '/public'));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
-// * Please include the private app access token in your repo BUT only an access token built in a TEST ACCOUNT. Don't do this practicum in your normal account.
-const PRIVATE_APP_ACCESS = '';
+// Replace 'YOUR_PRIVATE_APP_ACCESS_TOKEN' with your actual private app access token.
+const PRIVATE_APP_ACCESS = 'pat-na1-08fcfe01-5810-4de5-a867-0fc1fac8e803';
 
-// TODO: ROUTE 1 - Create a new app.get route for the homepage to call your custom object data. Pass this data along to the front-end and create a new pug template in the views folder.
-
-// * Code for Route 1 goes here
-
-// TODO: ROUTE 2 - Create a new app.get route for the form to create or update new custom object data. Send this data along in the next route.
-
-// * Code for Route 2 goes here
-
-// TODO: ROUTE 3 - Create a new app.post route for the custom objects form to create or update your custom object data. Once executed, redirect the user to the homepage.
-
-// * Code for Route 3 goes here
-
-/** 
-* * This is sample code to give you a reference for how you should structure your calls. 
-
-* * App.get sample
-app.get('/contacts', async (req, res) => {
-    const contacts = 'https://api.hubspot.com/crm/v3/objects/contacts';
-    const headers = {
-        Authorization: `Bearer ${PRIVATE_APP_ACCESS}`,
-        'Content-Type': 'application/json'
-    }
-    try {
-        const resp = await axios.get(contacts, { headers });
-        const data = resp.data.results;
-        res.render('contacts', { title: 'Contacts | HubSpot APIs', data });      
-    } catch (error) {
-        console.error(error);
-    }
-});
-
-* * App.post sample
-app.post('/update', async (req, res) => {
-    const update = {
-        properties: {
-            "favorite_book": req.body.newVal
-        }
-    }
-
-    const email = req.query.email;
-    const updateContact = `https://api.hubapi.com/crm/v3/objects/contacts/${email}?idProperty=email`;
+// Function to fetch custom object data
+async function fetchCustomObjectData() {
+    const customObjectEndpoint = 'https://api.hubspot.com/crm/v3/objects/p_pets';
     const headers = {
         Authorization: `Bearer ${PRIVATE_APP_ACCESS}`,
         'Content-Type': 'application/json'
     };
 
-    try { 
-        await axios.patch(updateContact, update, { headers } );
-        res.redirect('back');
-    } catch(err) {
-        console.error(err);
+    const propertiesToFetch = 'all'; // Fetch all properties
+
+    let allProperties = [];
+
+    let hasMore = true;
+    let offset = 0;
+    const limit = 100; // Adjust the limit as needed
+
+    while (hasMore) {
+        const params = {
+            properties: propertiesToFetch,
+            limit,
+            offset,
+        };
+
+        try {
+            const resp = await axios.get(customObjectEndpoint, { headers, params });
+            const data = resp.data.results;
+            allProperties = allProperties.concat(data);
+
+            if (data.length < limit) {
+                hasMore = false;
+            } else {
+                offset += limit;
+            }
+        } catch (error) {
+            console.error(error);
+            throw error;
+        }
     }
 
+    return allProperties;
+}
+
+
+
+// Route for the homepage
+app.get('/', async (req, res) => {
+    try {
+        // Fetch custom object data
+        const customObjectData = await fetchCustomObjectData();
+        console.log(customObjectData)
+        
+        // Render the homepage Pug template
+        res.render('homepage', { title: 'Custom Object Data', customObjectData });
+    } catch (error) {
+        console.error(error);
+        res.status(500).send('Internal Server Error');
+    }
 });
-*/
 
+// Route for the form to create or update custom object data
+app.get('/update-cobj', (req, res) => {
+    // Render the form Pug template
+    res.render('updates', { title: 'Update Custom Object Form' });
+});
 
-// * Localhost
+// Route to handle form submission and create/update custom object data
+app.post('/update-cobj', async (req, res) => {
+    try {
+        // Extract data from the form submission (req.body).
+        const formData = req.body;
+        
+        // Add code here to create or update custom object records in HubSpot using formData.
+        // You should make an API request to create or update records.
+        
+        // After creating or updating, redirect back to the homepage.
+        res.redirect('/');
+    } catch (error) {
+        console.error(error);
+        res.status(500).send('Internal Server Error');
+    }
+});
+
+// Localhost
 app.listen(3000, () => console.log('Listening on http://localhost:3000'));

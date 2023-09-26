@@ -1,0 +1,17 @@
+doctype html
+html
+  head
+    title= `${title}`
+    meta(name="viewport" content="width=device-width, initial-scale=1")
+    link(rel="stylesheet" href="/css/style.css")
+  body
+    h1 Update Custom Object Form
+    a(href="/") Return to the homepage
+    form(action="/update-cobj", method="POST")
+      label(for="property1") Property 1:
+      input(type="text", name="property1", id="property1")
+      label(for="property2") Property 2:
+      input(type="text", name="property2", id="property2")
+      label(for="property3") Property 3:
+      input(type="text", name="property3", id="property3")
+      input(type="submit", value="Submit")
