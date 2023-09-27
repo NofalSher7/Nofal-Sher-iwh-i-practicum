@@ -1,21 +1,27 @@
-doctype html
-html
-  head
+a(href="http://localhost:3000/update-cobj") Add/Update this table
+<!doctype html>
+<html>
+<head> 
     title= `${title}`
-    meta(name="viewport" content="width=device-width, initial-scale=1")
-    link(rel="stylesheet" href="/css/style.css")
-  body
-    h1 Custom Object Records
-    a(href="/update-cobj") Add/Update this table
-    table
-      thead
-        tr
-          th Car Name
-          th Car Price
-          th Car Color
-      tbody
-        each record in customObjectData
-          tr
-            td #{record.properties.hs_createdate} // Adjust these property names to match your custom object properties
-            td #{record.properties.hs_lastmodifieddate}
-            td #{record.properties.hs_object_id}
+</head>
+<body> 
+    <h1> Custom Object Table
+    <table bgcolor = "black">
+        <tr bgcolor = "lightpink">
+            <th>Name</th>
+            <th>Species</th>
+            <th>Gender</th>
+            <th>Email</th>
+            <th>Favorite Food</th>
+        </tr>
+    each pet in data
+        <tr bgcolor = "white">
+            <td>#{pet.properties.name}</td>
+            <td>#{pet.properties.species}</td>
+            <td>#{pet.properties.gender}</td>
+            <td>#{pet.properties.email}</td>
+            <td>#{pet.properties.favorite_food}</td>
+        </tr>
+    </table>
+                        
+         

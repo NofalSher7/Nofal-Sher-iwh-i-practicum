@@ -1,17 +1,32 @@
+<a href=http://localhost:3000>Return to the homepage</a>
 doctype html
 html
   head
-    title= `${title}`
-    meta(name="viewport" content="width=device-width, initial-scale=1")
-    link(rel="stylesheet" href="/css/style.css")
+    title= 'Update Custom Object Form | Integrating With HubSpot I Practicum'
   body
-    h1 Update Custom Object Form
-    a(href="/") Return to the homepage
-    form(action="/update-cobj", method="POST")
-      label(for="property1") Property 1:
-      input(type="text", name="property1", id="property1")
-      label(for="property2") Property 2:
-      input(type="text", name="property2", id="property2")
-      label(for="property3") Property 3:
-      input(type="text", name="property3", id="property3")
-      input(type="submit", value="Submit")
+    h1 Create New Pet
+    form(action="/update-cobj", method="post")
+      label(for="email") Email: 
+      input(type="email", name="email", required)
+      br
+
+      label(for="name") Name: 
+      input(type="text", name="name", required)
+      br
+
+      label(for="species") Species: 
+      input(type="text", name="species", required)
+      br
+
+      label(for="gender") Gender: 
+      select(name="gender", required)
+        option(value="Male") Male
+        option(value="Female") Female
+        option(value="Other") Other
+      br
+
+      label(for="favorite_food") Favorite Food: 
+      input(type="text", name="favorite_food", required)
+      br
+
+      button(type="submit") Submit
