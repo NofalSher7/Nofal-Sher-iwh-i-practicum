@@ -17,7 +17,7 @@ const PRIVATE_APP_ACCESS = 'pat-na1-08fcfe01-5810-4de5-a867-0fc1fac8e803';
 
 // Route 1 - Create a new app.get route for the homepage to call your custom object data.
 app.get('/', async (req, res) => {
-  const objectsUrl = 'https://api.hubspot.com/crm/v3/objects/p_pets?properties=email,name,species,gender,favorite_food'
+  const objectsUrl = 'https://api.hubspot.com/crm/v3/objects/2-18899024?properties=email&properties=species&properties=gender&properties=favorite_food'
 
   const headers = {
     Authorization: `Bearer ${PRIVATE_APP_ACCESS}`,
@@ -55,7 +55,7 @@ app.get('/update-cobj', (req, res) => {
       const petData = {
         properties: {
           email: req.body.email,
-          name: req.body.name,
+          pet_name: req.body.name,
           species: req.body.species,
           gender: req.body.gender,
           favorite_food: req.body.favorite_food
